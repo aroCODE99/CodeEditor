@@ -1,31 +1,31 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Aro's Code Editor</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aro's Code Editor</title>
-    <link rel="stylesheet" href="styles.css" />
-</head>
-
-<body>
-    <div class="toolbar">
-        <div class="btn-group">
-            <button class="runBtn" onclick="runCode()">run</button>
-            <button class="closeBtn" onclick="closeTerm()">close</button>
-            <button class="clearTerm" onclick="clearTerm()">clear Terminal</button>
+    <body>
+        <div class="toolbar">
+            <div class="btn-group">
+                <button class="runBtn" onclick="runCode()">run</button>
+                <button class="closeBtn" onclick="closeTerm()">close</button>
+                <button class="clearTerm" onclick="clearTerm()">
+                    clear Terminal
+                </button>
+            </div>
+            <h1>CODEVIM</h1>
         </div>
-        <h1>CODEVIM</h1>
-    </div>
-    <div id="editor-container">
-        <div id="lineNumbers" class="lineNumbers"></div>
-        <div id="editor" contenteditable="true"></div>
-    </div>
-    <div id="term">
-        <h3>Output:</h3>
-        <p id="showOp"></p>
-    </div>
-    <script src="script.js"></script>
-</body>
-
+        <div id="editor-container">
+            <div id="lineNumbers" class="lineNumbers"></div>
+            <div id="editor" contenteditable="true"></div>
+        </div>
+        <div id="term">
+            <h3>Output:</h3>
+            <p id="showOp"></p>
+        </div>
+        <script src="src/script.js"></script>
+    </body>
 </html>

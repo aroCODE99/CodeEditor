@@ -1,138 +1,127 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: "Courier New", monospace;
-  background-color: #1e1e1e;
-  color: #f8f8f2;
-  height: 100vh;
-  margin: 0;
-  display: flex;
-  flex-direction: column; /* Ensures elements stack vertically */
-  overflow: auto; /* Allow scrolling if content exceeds the height */
+    font-family: "Courier New", monospace;
+    background-color: #1e1e1e;
+    color: #f8f8f2;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column; /* Ensures elements stack vertically */
+    overflow: auto; /* Allow scrolling if content exceeds the height */
 }
 
 #editor-container {
-  display: flex;
-  flex-grow: 1; /* Allows the editor-container to expand */
-  height: calc(
-    100vh - 76px
-  ); /* Adjust the height to fit the viewport minus header */
-  overflow: hidden; /* Prevent any content overflow */
+    display: flex;
+    flex-grow: 1; /* Allows the editor-container to expand */
+    height: calc(
+        100vh - 76px
+    ); /* Adjust the height to fit the viewport minus header */
+    overflow: hidden; /* Prevent any content overflow */
 }
 
 #lineNumbers {
-  width: 70px;
-  background-color: #282a36;
-  color: #f8f8f2;
-  text-align: right;
-  padding: 10px;
-  font-size: 16px;
-  line-height: 1.5; /* Match editor's line height */
-  border-right: 2px solid #444;
-  overflow: hidden; /* Hide scrollbar */
+    width: 70px;
+    background-color: #282a36;
+    color: #f8f8f2;
+    text-align: right;
+    padding: 10px;
+    font-size: 16px;
+    line-height: 1.5; /* Match editor's line height */
+    border-right: 2px solid #444;
+    overflow: hidden; /* Hide scrollbar */
 }
 
 #editor {
-  flex-grow: 1; /* Take up the remaining width of the container */
-  height: 100%;
-  background-color: #24242b;
-  color: #f8f8f2;
-  border: none;
-  font-size: 16px;
-  padding: 10px;
-  resize: none; /* Disable resizing */
-  outline: none;
-  line-height: 1.5; /* Match line numbers' line height */
-  border: 2px solid #3a3a3a;
-  overflow-y: auto; /* Enable vertical scrolling */
+    flex-grow: 1; /* Take up the remaining width of the container */
+    height: 100%;
+    background-color: #24242b;
+    color: #f8f8f2;
+    border: none;
+    font-size: 16px;
+    padding: 10px;
+    resize: none; /* Disable resizing */
+    outline: none;
+    line-height: 1.5; /* Match line numbers' line height */
+    border: 2px solid #3a3a3a;
+    overflow-y: auto; /* Enable vertical scrolling */
 }
 
 button {
-  padding: 10px 20px;
-  color: #ffffff;
-  font-weight: bold;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+    padding: 10px 20px;
+    color: #ffffff;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .toolbar {
-  padding: 20px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-right: 100px;
-  background: #24242b;
-  z-index: 1000; /* Ensures it stays on top */
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 100px;
+    background: #24242b;
+    z-index: 1000; /* Ensures it stays on top */
 }
 .toolbar h1 {
-  font-style: italic;
+    font-style: italic;
 }
 
 .btn-group {
-  margin: 0 20px;
+    margin: 0 20px;
 }
 
 .closeBtn {
-  background-color: #e91e63;
+    background-color: #e91e63;
 }
 
 .runBtn {
-  background-color: #4ec6f1;
+    background-color: #4ec6f1;
 }
 
 .clearTerm {
-  color: #000000;
-  background-color: #ffffff;
+    color: #000000;
+    background-color: #ffffff;
 }
 
 .runBtn:hover {
-  background-color: #4ec6f1;
+    background-color: #4ec6f1;
 }
 
 .closeBtn:hover {
-  background-color: #ff4d4d;
+    background-color: #ff4d4d;
 }
 
 .clearTerm:hover {
-  background-color: #ffff10;
+    background-color: #ffff10;
 }
 
 #term {
-  width: 100%;
-  min-height: 300px; /* Set a minimum height */
-  height: 40%; /* Adjust the height (60% of the viewport height) */
-  padding: 20px;
-  border: 2px solid #3a3a3a;
-  overflow: auto; /* Allow scrolling when content exceeds the height */
-  display: none;
-  background: #24242b;
-  position: fixed; /* Fixes the toolbar at the top */
-  bottom: 0; /* Aligns to the top of the viewport */
-  left: 0;
-  right: 0;
+    width: 100%;
+    min-height: 300px; /* Set a minimum height */
+    height: 40%; /* Adjust the height (60% of the viewport height) */
+    padding: 20px;
+    border: 2px solid #3a3a3a;
+    overflow: auto; /* Allow scrolling when content exceeds the height */
+    display: none;
+    background: #24242b;
+    position: fixed; /* Fixes the toolbar at the top */
+    bottom: 0; /* Aligns to the top of the viewport */
+    left: 0;
+    right: 0;
 }
 
 #showOp {
-  font-size: 20px;
-  color: #ff0000;
-  margin-top: 15px;
-  white-space: pre-wrap;
-  overflow: auto;
+    font-size: 20px;
+    color: #ff0000;
+    margin-top: 15px;
+    white-space: pre-wrap;
+    overflow: auto;
 }
-
-/*@media (max-width: 768px) {*/
-/*  #editor,*/
-/*  .term {*/
-/*    font-size: 14px;*/
-/*    padding: 15px;*/
-/*  }*/
-/*  button {*/
-/*    padding: 8px 15px;*/
-/*  }*/
-/*}*/
