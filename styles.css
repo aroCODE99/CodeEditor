@@ -18,31 +18,21 @@ body {
 #editor-container {
     display: flex;
     flex-grow: 1; /* Allows the editor-container to expand */
+    /* view=port height - header height */
     height: calc(
         100vh - 76px
     ); /* Adjust the height to fit the viewport minus header */
-    overflow: hidden; /* Prevent any content overflow */
-}
-
-#lineNumbers {
-    width: 70px;
-    background-color: #282a36;
-    color: #f8f8f2;
-    text-align: right;
-    font-size: 21px;
-    line-height: 2.2; /* Match editor's line height */
-    border-right: 2px solid #444;
-    overflow: auto; /* Hide scrollbar */
+    overflow: auto; /* Prevent any content overflow */
 }
 
 #editor {
     background-color: #24242b;
     color: #f8f8f2;
     border: 1px solid #3a3a3a;
-    font-size: 16px;
-    padding: 10px;
+    padding: 20px;
     outline: none;
     width: 100%;
+    height: 100%;
 }
 
 button {

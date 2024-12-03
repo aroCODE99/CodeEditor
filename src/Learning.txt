@@ -1,0 +1,38 @@
+getBoundingClientRect(): The getBoundingClientRect() method in JavaScript is used to obtain the position and size of an element relative to the viewport 
+                        (the visible part of the web page). 
+Properties of DOMRect
+The DOMRect object has the following properties:
+
+Property	Description
+x	The x-coordinate of the left edge (same as left).
+y	The y-coordinate of the top edge (same as top).
+width	The width of the element (in pixels).
+height	The height of the element (in pixels).
+top	The distance from the top edge of the viewport to the top edge of the element.
+right	The distance from the left edge of the viewport to the right edge of the element.
+bottom	The distance from the top edge of the viewport to the bottom edge of the element.
+left	The distance from the left edge of the viewport to the left edge of the element.
+
+example:
+Viewport
++----------------------------------+
+|                                  |
+|    +---------+                  |
+|    | Element |                  |
+|    +---------+                  |
+|                                  |
++----------------------------------+
+
+Calling element.getBoundingClientRect() might return:
+{
+  top: 100,     // Distance from the viewport's top to the element's top edge
+  left: 50,     // Distance from the viewport's left to the element's left edge
+  bottom: 150,  // Distance from the viewport's top to the element's bottom edge
+  right: 200,   // Distance from the viewport's left to the element's right edge
+  width: 150,   // Element's width
+  height: 50    // Element's height
+}
+
+
+
+

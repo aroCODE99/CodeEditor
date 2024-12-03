@@ -139,10 +139,8 @@ function onLoad() {
     editor.innerText = buffer.content;
     // lines = buffer.cursorPosition.lines;
     // console.log(lines);
-    updateLineNumbers();
     drawCanvas();
     getCursorPosition();
-    drawCursor();
 }
 
 document.addEventListener("DOMContentLoaded", onLoad);
@@ -161,10 +159,9 @@ function loadAllBuffersCont() {
 //throttling
 let timeout;
 editor.addEventListener("input", () => {
-    //clear prev timer
     clearTimeout(timeout);
-    //intitate the new timer
     timeout = setTimeout(() => {
+        console.log("hello");
         getCursorPosition(); // Update cursor position
     }, 300); // Delay of 300ms before executing getCursorPosition
 
@@ -174,9 +171,12 @@ editor.addEventListener("input", () => {
 // setInterval(saveThisBuffer, 2000); //constantly saving buffers after each 2sec
 
 //making a text editor from scratch
-var fontSize = 30;
+//this store's the line's of text
 let text = [""];
-const lineHeight = fontSize * 2.1; // Set line height to be a bit larger than font size
+
+var fontSize = 30;
+const lineHeight = fontSize * 2;
+// Set line height to be a bit larger than font size
 const ctx = editor.getContext("2d");
 let cursor = { line: 0, col: 0 }; // Initial cursor state
 ctx.font = `normal ${fontSize}px Arial`; // Ensure normal weight
@@ -189,84 +189,150 @@ editor.addEventListener("click", () => {
     editor.focus();
 });
 
-let currLine = 0;
-let column = 0;
-let count = 1;
 editor.addEventListener("keydown", (event) => {
-    //now they are in-sync but i am leaving this logic like as it is
-    // i dk why really
-    // console.log("cursor.line" + cursor.line, "currLine" + currLine);
-
-    // console.log(event.key);
-    if (event.key === "Backspace") {
-        // handle Backspace
-        if (text[currLine] === "" && currLine > 0) {
-            text.pop();
-            currLine -= 1;
-        } else {
-            text[currLine] = text[currLine].slice(0, -1);
-            column -= 1;
-        }
-    } else if (event.key === "Enter") {
-        text.push("");
-        currLine += 1;
-    } else if (event.key === "ArrowUp" && cursor.line > 1) {
-        // its only going in once
-        console.log(count + 1);
-        cursor.line -= 1;
-        // logic to handle
-        // 1. while moving up i think that the cursor should be remain at same position meaning that if only line should be changing
-        //
-        // 2. but if the line is smaller than cursor position that we should move it at the last position and also it should not be moving past curr line
-        //
-        // 3. cursor should not go below zero
-    } else if (event.key.length === 1) {
-        text[currLine] += event.key;
+    switch (event.key) {
+        case "Backspace":
+            handleBackspace();
+            break;
+        case "Enter":
+            handleEnter();
+            break;
+        case "ArrowUp":
+            handleArrowUp();
+            break;
+        case "ArrowDown":
+            handleArrowDown();
+            break;
+        case "ArrowLeft":
+            handleArrowLeft();
+            break;
+        case "ArrowRight":
+            handleArrowRight();
+            break;
+        //add
+        default:
+            if (event.key.length === 1) {
+                handleTextInput(event.key);
+            }
+            break;
     }
-    //thinking of adding the aro functionality but we could switch arrow's to vim motions in future
 
-    //i think keydown and input events does not work with each other
-    //yes they do because they clash on each other
-    updateLineNumbers();
-    getCursorPosition();
+    // this was causing big problem
+    // getCursorPosition();
     drawCanvas();
     drawCursor();
 });
+
+function handleBackspace() {
+    if (cursor.col > 0) {
+        // Remove character from the current position
+        text[cursor.line - 1] =
+            text[cursor.line - 1].substring(0, cursor.col - 1) +
+            text[cursor.line - 1].substring(cursor.col);
+        cursor.col -= 1; // Move cursor left
+    } else if (cursor.line > 1) {
+        // Merge current line with the previous one
+        const prevLine = text[cursor.line - 2];
+        const currentLine = text[cursor.line - 1];
+        text[cursor.line - 2] = prevLine + currentLine;
+        //this remove's the current line
+        text.splice(cursor.line - 1, 1); // Remove current line
+        cursor.line -= 1;
+        cursor.col = prevLine.length; // Move cursor to end of previous line
+    }
+}
+
+function handleEnter() {
+    let rightSubstring = text[cursor.line - 1].substring(cursor.col);
+    text[cursor.line - 1] = text[cursor.line - 1].substring(0, cursor.col);
+    text.splice(cursor.line, 0, rightSubstring);
+    cursor.col = 0;
+    cursor.line += 1;
+}
+
+function handleArrowUp() {
+    // so this is now working
+    // so what is happening this arrowUp is only working only once
+    // but the enter is editing the cursor.line += 1
+    if (cursor.line > 1) {
+        cursor.line -= 1;
+        currLength = text[cursor.line - 1].length;
+        cursor.col = Math.min(currLength, cursor.col);
+    }
+}
+
+function handleArrowDown() {
+    if (cursor.line < text.length) {
+        cursor.line += 1;
+        currLength = text[cursor.line - 1].length;
+        cursor.col = Math.min(currLength, cursor.col);
+    }
+}
+
+function handleTextInput(key) {
+    const currentLine = text[cursor.line - 1];
+    text[cursor.line - 1] =
+        currentLine.substring(0, cursor.col) +
+        key +
+        currentLine.substring(cursor.col);
+    cursor.col += 1;
+}
+
+function handleArrowLeft() {
+    if (cursor.col > 0) {
+        cursor.col -= 1;
+    }
+}
+
+function handleArrowRight() {
+    if (cursor.col < text[cursor.line - 1].length) {
+        cursor.col += 1;
+    }
+}
+
 function drawCanvas() {
     ctx.clearRect(0, 0, editor.width, editor.height); // Clear the entire canvas
     text.forEach((lineText, index) => {
-        ctx.fillText(lineText, 3, index * lineHeight);
+        // Set style for line numbers
+        ctx.font = `bold ${fontSize}px Arial`; // Bold font for line numbers
+        ctx.fillStyle = "#ff6f61"; // Color for line numbers
+        ctx.fillText("~", 0, index * lineHeight + 5); // Draw line number
+
+        // Set style for the actual text
+        ctx.font = `normal ${fontSize}px Arial`; // Normal font for text
+        ctx.fillStyle = "#ffffff"; // Color for text
+        ctx.fillText(lineText, 60, index * lineHeight + 5); // Draw text
     });
 }
+
+//blinking cursor
+let blinkingCursor = true;
+setInterval(() => {
+    blinkingCursor = !blinkingCursor;
+    drawCanvas();
+    if (blinkingCursor) drawCursor();
+}, 500);
 
 function drawCursor() {
     const currentLine = text[cursor.line - 1] || "";
     //measuring the width of the currLine text width and placing the cursor there
     const cursorX =
-        10 + ctx.measureText(currentLine.substring(0, cursor.col)).width;
+        62 + ctx.measureText(currentLine.substring(0, cursor.col)).width;
     // meh! logic
-    const cursorY = cursor.line * lineHeight - 40;
+    const cursorY = cursor.line * lineHeight - 37;
 
     // Drawing the cursor
-    // This ensures the cursor is drawn independently without affecting other drawings on the canvas.
+    // This ensure the cursor is drawn independently without affecting other drawings on the canvas.
     ctx.beginPath();
     //this just moves the cursor
     ctx.moveTo(cursorX, cursorY - 20);
     //this is what actually draws something
-    ctx.lineTo(cursorX, cursorY + 10);
+    ctx.lineTo(cursorX, cursorY + 15);
     ctx.strokeStyle = "white";
-    ctx.lineHeight = 100;
-    ctx.lineWidth = 6;
-    // enders the line on the canvas based on the defined path.
+    ctx.lineHeight = 60;
+    ctx.lineWidth = 2;
+    // renders the line on the canvas based on the defined path.
     ctx.stroke();
-}
-
-function updateLineNumbers() {
-    let lineNumberHTML = "";
-    for (let i = 1; i <= currLine + 1; i++) {
-        lineNumberHTML += `${i}.<br>`;
-    }
-    lineNumbers.innerHTML = lineNumberHTML;
 }
 
 function getCursorPosition() {
@@ -346,6 +412,12 @@ const runCode = () => {
     // Restore console.log behavior
     console.log = oldConsoleLog;
 };
+
+//resizing stuff
+// we do this on window meaning the whole page
+window.addEventListener("resize", () => {
+    console.log("hello");
+});
 // saving stuff
 // setInterval(loadAllBuffersCont, 69000)
 
@@ -382,17 +454,21 @@ const runCode = () => {
 //  DONE - fix the column positioning
 //  Done - Before adding the cursor wee should first get the position of the cursor
 //  Done - add the cursor
+//  Done - lets first learn about the cursor positioning
+//  Done - we need to add aroow's functionality
+//  Donw - we have to fix teh input vala function
+//  Done - we have to fix the enter
+//  Done - we have to make the navigation through line's happen
+//  Done - fix the cursor (hard) (actually it was preety easy)
+//  Done - do line numbers with canvas
+//
 //
 //  currTodos
-//  1. fix the text editor logic
-//      a. lets first learn about the cursor positioning
-//      b. remove the dependency from currLine and currCol variables instead use the object
+//  1. let's do the resizing fixes
 //  2. get the buffers and buffer running
-//
-//
-//
-//
+//  3. add the selection, copy, past, cut support and more editor support
 //
 // maybe
 // maybe try to make lineNumbers out of the canvas
+// make text editor customizable
 // add vim functionality
